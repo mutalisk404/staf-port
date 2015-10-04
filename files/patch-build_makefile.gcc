@@ -1,0 +1,18 @@
+--- build/makefile.gcc.orig	2015-10-03 23:31:52 UTC
++++ build/makefile.gcc
+@@ -13,12 +13,12 @@ CC_CC             := g++
+ CC_C              := g++ -x c
+ 
+ ifeq ($(OS_NAME),macosx)
+-    CC_MK_SHARED_LIB := g++ -dynamiclib
++    CC_MK_SHARED_LIB := $(CC_CC) -dynamiclib
+ else
+-    CC_MK_SHARED_LIB := g++ -shared
++    CC_MK_SHARED_LIB := $(CC_CC) -shared
+ endif
+ 
+-GCC_VERSION := $(word 3,$(shell g++ --version))
++GCC_VERSION := $(word 3,$(shell $(CC_CC) --version))
+ GCC_MAJOR_VERSION := $(word 1,$(subst ., ,$(GCC_VERSION)))
+ 
+ ifeq ($(BUILD_TYPE),retail)

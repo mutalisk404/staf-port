@@ -50,6 +50,12 @@ PYTHON_MAKE_ARGS+=	PYTHON_BUILD_V${i}=0
 .endif
 .endfor
 
+post-patch:
+	${REINPLACE_CMD} "s|%%DATADIR%%|${DATADIR}|" \
+		${WRKSRC}/stafif/STAFConverter.cpp
+	${REINPLACE_CMD} "s|%%PREFIX%%|${PREFIX}|g" \
+		${WRKSRC}/stafproc/STAFProc.cpp
+
 do-install:
 	cd ${WRKDIR}/rel/freebsd/${PORTNAME}/${STAF_BUILD_TYPE} && \
 		./STAFInst -noreg -acceptlicense -target ${STAGEDIR}${PREFIX}/staf

@@ -14,6 +14,7 @@ LICENSE=	EPL
 
 WRKSRC=		${WRKDIR}/src
 WRKSRC_SUBDIR=	${PORTNAME}
+STAF_REL_DIR=	${WRKDIR}/rel/freebsd/staf/${STAF_BUILD_TYPE}
 
 MAKEFILE=	makefile
 MAKE_ARGS=	OS_NAME="freebsd" \
@@ -57,9 +58,6 @@ post-patch:
 		${WRKSRC}/stafproc/STAFProc.cpp
 
 do-install:
-	cd ${WRKDIR}/rel/freebsd/${PORTNAME}/${STAF_BUILD_TYPE} && \
-		./STAFInst -noreg -acceptlicense -target ${STAGEDIR}${PREFIX}/staf
-	cd ${STAGEDIR}${PREFIX}/staf && \
-		${RM} STAFUninst STAFEnv.sh startSTAFProc.sh LICENSE.htm
+	cd ${STAF_REL_DIR}/include && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/include
 
 .include <bsd.port.mk>

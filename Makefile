@@ -39,7 +39,10 @@ DEBUG_VARS_OFF=	staf_build_type=retail
 
 IPV6_VARS=	staf_use_ipv6=1
 
-OPENSSL_VARS=	staf_use_ssl=1
+OPENSSL_VARS=	staf_use_ssl=1 use_openssl=yes
+OPENSSL_MAKE_ARGS=	OPENSSL_ROOT=${OPENSSLBASE} \
+			OPENSSL_LIBDIRS="${OPENSSLLIB}" \
+			OPENSSL_INCLUDEDIRS=${OPENSSLINC}
 
 PYTHON_USES=	python
 PYTHON_VARS=	staf_projects+=python

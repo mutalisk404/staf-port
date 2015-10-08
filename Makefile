@@ -58,6 +58,25 @@ post-patch:
 		${WRKSRC}/stafproc/STAFProc.cpp
 
 do-install:
-	cd ${STAF_REL_DIR}/include && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/include
+	cd ${STAF_REL_DIR}/include && \
+		${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/include
+	${MKDIR} ${STAGEDIR}${DATADIR}
+	cd ${STAF_REL_DIR}/codepage && \
+		${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}
+	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	cd ${STAF_REL_DIR}/samples && \
+		${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
+	${TEST} -d ${STAF_REL_DIR}/docs  && \
+		${MKDIR} ${STAGEDIR}${DOCSDIR} && \
+		cd ${STAF_REL_DIR}/docs && \
+		${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR} || ${TRUE}
+
+do-install-PYTHON-on:
+	${MKDIR} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}
+	${FIND} ${STAF_REL_DIR}/lib/ -name '*.py' | \
+		${XARGS} -L1 -I% \
+		${INSTALL_DATA} % ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}
+	${INSTALL_DATA} ${STAF_REL_DIR}/lib/python${PYTHON_SUFFIX}/PYSTAF.so \
+		${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}
 
 .include <bsd.port.mk>

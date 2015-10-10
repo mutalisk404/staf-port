@@ -59,11 +59,13 @@ PYTHON_USES=	python:-3.4
 PYTHON_VARS=	staf_projects+=python
 PYTHON_MAKE_ARGS=	PYTHON_V${PYTHON_SUFFIX}_ROOT=${LOCALBASE} \
 			PYTHON_BUILD_V${PYTHON_SUFFIX}=1
+.ifdef PYTHON_SUFFIX
 .for i in 22 23 24 25 26 30 31 32 33 34
 .if i != PYTHON_SUFFIX
 PYTHON_MAKE_ARGS+=	PYTHON_BUILD_V${i}=0
 .endif
 .endfor
+.endif
 
 post-patch:
 	${REINPLACE_CMD} "s|%%DATADIR%%|${DATADIR}|" \

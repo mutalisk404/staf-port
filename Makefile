@@ -29,7 +29,7 @@ STAF_PROJECTS=	staf connprov_tcp connprov_localipc
 
 MAKE_JOBS_UNSAFE=	yes
 USES=		gmake
-LD_CONFIG=	yes
+USE_LDCONFIG=	yes
 USE_RC_SUBR=	stafproc
 SUB_LIST=	STAF_VAR_DIR=${STAF_VAR_DIR}
 

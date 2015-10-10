@@ -37,6 +37,7 @@ STAF_LIB_FILES=	libHello.so libSTAF.so libSTAFDSLS.so libSTAFDeviceService.so \
 		libSTAFMon.so libSTAFPool.so libSTAFReg.so libSTAFTCP.so
 STAF_PYLIB_FILES=	PySTAF.py PySTAFLog.py PySTAFMon.py PySTAFv3.py
 STAF_SSL_FILES=	CAList.crt STAFDefault.crt STAFDefault.key
+STAF_VAR_DIR?=	/var/db/STAF
 
 OPTIONS_DEFINE=	DEBUG IPV6 OPENSSL PYTHON
 OPTIONS_DEFAULT=DEBUG
@@ -67,6 +68,8 @@ post-patch:
 		${WRKSRC}/stafif/STAFConverter.cpp \
 		${WRKSRC}/connproviders/tcp/STAFTCPConnProvider.cpp
 	${REINPLACE_CMD} "s|%%PREFIX%%|${PREFIX}|g" \
+		${WRKSRC}/stafproc/STAFProc.cpp
+	${REINPLACE_CMD} "s|%%STAFVARDIR%%|${STAF_VAR_DIR}|g" \
 		${WRKSRC}/stafproc/STAFProc.cpp
 
 do-install:

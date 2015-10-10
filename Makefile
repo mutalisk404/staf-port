@@ -95,8 +95,8 @@ do-install:
 
 do-install-OPENSSL-on:
 	${MKDIR} ${STAGEDIR}${DATADIR}
-.for file in ${STAF_SSL_FILES}
-	${INSTALL_DATA} ${STAF_REL_DIR}/bin/${file} ${STAGEDIR}${DATADIR}
+.for sslfile in ${STAF_SSL_FILES}
+	${INSTALL_DATA} ${STAF_REL_DIR}/bin/${sslfile} ${STAGEDIR}${DATADIR}
 .endfor
 
 do-install-PYTHON-on:

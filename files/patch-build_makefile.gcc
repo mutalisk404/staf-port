@@ -1,4 +1,4 @@
---- build/makefile.gcc.orig	2015-10-03 23:31:52 UTC
+--- build/makefile.gcc.orig	2015-09-28 13:30:12 UTC
 +++ build/makefile.gcc
 @@ -13,12 +13,12 @@ CC_CC             := g++
  CC_C              := g++ -x c
@@ -16,3 +16,12 @@
  GCC_MAJOR_VERSION := $(word 1,$(subst ., ,$(GCC_VERSION)))
  
  ifeq ($(BUILD_TYPE),retail)
+@@ -36,8 +36,6 @@ else
+     LINK_OBJS_FIRST := 0
+ endif
+ 
+-CC_DEBUG        := -g
+-CC_OPTIMIZE     := -O2
+ CC_FPIC         := -fPIC
+ CC_STL_PTHREADS := -D_PTHREADS
+ CC_SHAREDLIBNAMEFLAGS = -DSTAF_SHARED_LIB_PREFIX=$(OS_SHARED_LIB_PREFIX) \

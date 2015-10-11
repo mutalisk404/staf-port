@@ -20,6 +20,7 @@ MAKEFILE=	makefile
 MAKE_ARGS=	OS_NAME="freebsd" \
 		CC_CC=${CXX} \
 		CC_C=${CC} \
+		CFLAGS="${CFLAGS}" \
 		STAF_USE_SSL=${STAF_USE_SSL} \
 		STAF_USE_IPV6=${STAF_USE_IPV6} \
 		BUILD_TYPE=${STAF_BUILD_TYPE} \

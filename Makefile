@@ -37,7 +37,7 @@ STAF_BIN_FILES=	STAF STAFProc STAFReg STAFLoop STAFExecProxy FmtLog
 STAF_LIB_FILES=	libHello.so libSTAF.so libSTAFDSLS.so libSTAFDeviceService.so \
 		libSTAFEXECPROXY.so libSTAFLIPC.so libSTAFLog.so \
 		libSTAFMon.so libSTAFPool.so libSTAFReg.so libSTAFTCP.so
-STAF_PYLIB_FILES=	PySTAF.py PySTAFLog.py PySTAFMon.py PySTAFv3.py
+STAF_PYLIB_FILES=	PySTAFLog.py PySTAFMon.py
 STAF_SSL_FILES=	CAList.crt STAFDefault.crt STAFDefault.key
 STAF_VAR_DIR?=	/var/db/STAF
 
@@ -56,12 +56,27 @@ OPENSSL_MAKE_ARGS=	OPENSSL_ROOT=${OPENSSLBASE} \
 			OPENSSL_INCLUDEDIRS=${OPENSSLINC}
 
 PYTHON_USES=	python:-3.4
-PYTHON_VARS=	staf_projects+=python
+PYTHON_VARS=	staf_projects+=python use_python=py3kplist
 PYTHON_MAKE_ARGS=	PYTHON_V${PYTHON_SUFFIX}_ROOT=${LOCALBASE} \
+			PYTHON_V${PYTHON_SUFFIX}_INCLUDEDIRS=${PYTHON_INCLUDEDIR} \
+			PYTHON_V${PYTHON_SUFFIX}_LIBS=${PYTHON_VERSION}${PYTHON_ABIVER} \
 			PYTHON_BUILD_V${PYTHON_SUFFIX}=1
-.ifdef PYTHON_SUFFIX
-.for i in 22 23 24 25 26 30 31 32 33 34
-.if i != PYTHON_SUFFIX
+
+.include <bsd.port.pre.mk>
+
+.if ${PORT_OPTIONS:MPYTHON}
+.if ${PYTHON_MAJOR_VER} == 2
+STAF_PYLIB_FILES+=	PySTAF.py
+PLIST_SUB+=		PYTHON_2="" PYTHON_3="@comment "
+MAKE_ARGS+=		PYTHON_V${PYTHON_SUFFIX}_LIBDIRS=${PYTHON_LIBDIR}/config
+.else
+STAF_PYLIB_FILES+=	PySTAFv3.py
+PLIST_SUB+=		PYTHON_3="" PYTHON_2="@comment "
+MAKE_ARGS+=		PYTHON_V${PYTHON_SUFFIX}_LIBDIRS=${PYTHON_LIBDIR}/config-${PYTHON_VER}${PYTHON_ABIVER}
+.endif
+
+.for i in 22 23 24 25 26 27 30 31 32 33 34
+.if ${PYTHON_SUFFIX} != ${i}
 PYTHON_MAKE_ARGS+=	PYTHON_BUILD_V${i}=0
 .endif
 .endfor
@@ -118,4 +133,4 @@ do-install-PYTHON-on:
 	cd ${STAF_REL_DIR}/docs && \
 		${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

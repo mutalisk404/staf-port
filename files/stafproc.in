@@ -17,7 +17,7 @@ load_rc_config $name
 : ${stafproc_enable:="NO"}
 : ${stafproc_config:="%%PREFIX%%/etc/STAF.cfg"}
 : ${stafproc_user:="root"}
-: ${stafproc_group:="root"}
+: ${stafproc_group:="wheel"}
 : ${stafproc_log:="/var/log/stafproc.log"}
 
 required_files="${stafproc_config}"

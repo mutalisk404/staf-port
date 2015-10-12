@@ -14,7 +14,7 @@ LICENSE=	EPL
 
 WRKSRC=		${WRKDIR}/src
 WRKSRC_SUBDIR=	${PORTNAME}
-STAF_REL_DIR=	${WRKDIR}/rel/freebsd/staf/${STAF_BUILD_TYPE}
+INSTALL_WRKSRC=	${WRKDIR}/rel/freebsd/staf/${STAF_BUILD_TYPE}
 
 MAKEFILE=	makefile
 MAKE_ARGS=	OS_NAME="freebsd" \
@@ -97,44 +97,44 @@ post-patch:
 
 do-install:
 .for bin in ${STAF_BIN_FILES}
-	${INSTALL_PROGRAM} ${STAF_REL_DIR}/bin/${bin} ${STAGEDIR}${PREFIX}/bin/
+	${INSTALL_PROGRAM} ${INSTALL_WRKSRC}/bin/${bin} ${STAGEDIR}${PREFIX}/bin/
 .endfor
 	${LN} -s ${PREFIX}/bin/STAF ${STAGEDIR}${PREFIX}/bin/staf
 .for lib in ${STAF_LIB_FILES}
-	${INSTALL_LIB} ${STAF_REL_DIR}/lib/${lib} ${STAGEDIR}${PREFIX}/lib/
+	${INSTALL_LIB} ${INSTALL_WRKSRC}/lib/${lib} ${STAGEDIR}${PREFIX}/lib/
 .endfor
-	${INSTALL_DATA} ${STAF_REL_DIR}/bin/STAF.cfg \
+	${INSTALL_DATA} ${INSTALL_WRKSRC}/bin/STAF.cfg \
 		${STAGEDIR}${PREFIX}/etc/STAF.cfg.sample
-	cd ${STAF_REL_DIR}/include && \
+	cd ${INSTALL_WRKSRC}/include && \
 		${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/include
 	${MKDIR} ${STAGEDIR}${DATADIR}/codepage
-	cd ${STAF_REL_DIR}/codepage && \
+	cd ${INSTALL_WRKSRC}/codepage && \
 		${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/codepage
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	cd ${STAF_REL_DIR}/samples && \
+	cd ${INSTALL_WRKSRC}/samples && \
 		${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
 
 do-install-OPENSSL-on:
 	${MKDIR} ${STAGEDIR}${DATADIR}
 .for sslfile in ${STAF_SSL_FILES}
-	${INSTALL_DATA} ${STAF_REL_DIR}/bin/${sslfile} ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${INSTALL_WRKSRC}/bin/${sslfile} ${STAGEDIR}${DATADIR}
 .endfor
 
 do-install-PYTHON-on:
 	${MKDIR} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}
 .for lib in ${STAF_PYLIB_FILES}
-	${INSTALL_DATA} ${STAF_REL_DIR}/lib/${lib} \
+	${INSTALL_DATA} ${INSTALL_WRKSRC}/lib/${lib} \
 		${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}
 .endfor
 	${PYTHON_CMD} -m compileall -d ${PYTHON_SITELIBDIR}/${PORTNAME} \
 		${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}
 	${PYTHON_CMD} -O -m compileall -d ${PYTHON_SITELIBDIR}/${PORTNAME} \
 		${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}
-	${INSTALL_LIB} ${STAF_REL_DIR}/lib/python${PYTHON_SUFFIX}/PYSTAF.so \
+	${INSTALL_LIB} ${INSTALL_WRKSRC}/lib/python${PYTHON_SUFFIX}/PYSTAF.so \
 		${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}
 	${ECHO} ${PORTNAME} > ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}.pth
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	cd ${STAF_REL_DIR}/docs && \
+	cd ${INSTALL_WRKSRC}/docs && \
 		${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.post.mk>

@@ -4,7 +4,8 @@
 PORTNAME=	staf
 PORTVERSION=	3.4.23
 CATEGORIES=	devel net
-MASTER_SITES=	http://prdownloads.sourceforge.net/staf/
+MASTER_SITES=	https://prdownloads.sourceforge.net/staf/ \
+		http://prdownloads.sourceforge.net/staf/
 DISTNAME=	STAF${PORTVERSION:S/.//g}-src
 
 MAINTAINER=	kozlov.sergey.404@gmail.com
@@ -28,23 +29,6 @@ MAKE_ARGS=	OS_NAME="freebsd" \
 		BUILD_TYPE=${STAF_BUILD_TYPE} \
 		PROJECTS="${STAF_PROJECTS}"
 
-STAF_PROJECTS=	staf connprov_tcp connprov_localipc
-
-MAKE_JOBS_UNSAFE=	yes
-USES=		gmake
-USE_LDCONFIG=	yes
-USE_RC_SUBR=	stafproc
-SUB_LIST+=	STAF_VAR_DIR=${STAF_VAR_DIR}
-
-STAF_BIN_FILES=	STAF STAFProc STAFReg STAFLoop STAFExecProxy FmtLog
-STAF_LIB_FILES=	libHello.so libSTAF.so libSTAFDSLS.so libSTAFDeviceService.so \
-		libSTAFEXECPROXY.so libSTAFLIPC.so libSTAFLog.so \
-		libSTAFMon.so libSTAFPool.so libSTAFReg.so libSTAFTCP.so
-STAF_PYLIB_FILES=	PySTAFLog.py PySTAFMon.py
-STAF_SSL_FILES=	CAList.crt STAFDefault.crt STAFDefault.key
-STAF_PYTHON_VERSIONS=	22 23 24 25 26 27 30 31 32 33 34
-STAF_VAR_DIR?=	/var/db/STAF
-
 OPTIONS_DEFINE=	DEBUG IPV6 OPENSSL PYTHON
 OPTIONS_DEFAULT=IPV6 OPENSSL
 OPTIONS_SUB=	yes
@@ -65,6 +49,22 @@ PYTHON_MAKE_ARGS=	PYTHON_V${PYTHON_SUFFIX}_ROOT=${LOCALBASE} \
 			PYTHON_V${PYTHON_SUFFIX}_INCLUDEDIRS=${PYTHON_INCLUDEDIR} \
 			PYTHON_V${PYTHON_SUFFIX}_LIBS=${PYTHON_VERSION}${PYTHON_ABIVER} \
 			PYTHON_BUILD_V${PYTHON_SUFFIX}=1
+
+MAKE_JOBS_UNSAFE=	yes
+USES=		gmake
+USE_LDCONFIG=	yes
+USE_RC_SUBR=	stafproc
+SUB_LIST+=	STAF_VAR_DIR=${STAF_VAR_DIR}
+
+STAF_PROJECTS=	staf connprov_tcp connprov_localipc
+STAF_BIN_FILES=	STAF STAFProc STAFReg STAFLoop STAFExecProxy FmtLog
+STAF_LIB_FILES=	libHello.so libSTAF.so libSTAFDSLS.so libSTAFDeviceService.so \
+		libSTAFEXECPROXY.so libSTAFLIPC.so libSTAFLog.so \
+		libSTAFMon.so libSTAFPool.so libSTAFReg.so libSTAFTCP.so
+STAF_PYLIB_FILES=	PySTAFLog.py PySTAFMon.py
+STAF_SSL_FILES=	CAList.crt STAFDefault.crt STAFDefault.key
+STAF_PYTHON_VERSIONS=	22 23 24 25 26 27 30 31 32 33 34
+STAF_VAR_DIR?=	/var/db/STAF
 
 .include <bsd.port.pre.mk>
 

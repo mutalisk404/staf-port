@@ -12,6 +12,7 @@ MAINTAINER=	kozlov.sergey.404@gmail.com
 COMMENT=	Software Testing Automation Framework
 
 LICENSE=	EPL
+LICENSE_FILE=	${WRKSRC}/LICENSE.htm
 
 WRKSRC=		${WRKDIR}/src
 WRKSRC_SUBDIR=	${PORTNAME}

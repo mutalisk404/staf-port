@@ -1,5 +1,7 @@
 bin/FmtLog
 bin/STAF
+%%PERL%%bin/STAF.pl
+%%PERL%%bin/STAF2.pl
 bin/STAFExecProxy
 bin/STAFLoop
 bin/STAFProc
@@ -58,6 +60,12 @@ lib/libSTAFMon.so
 lib/libSTAFPool.so
 lib/libSTAFReg.so
 lib/libSTAFTCP.so
+%%PERL%%%%SITE_PERL%%/DeviceService.pm
+%%PERL%%%%SITE_PERL%%/PLSTAF.pm
+%%PERL%%%%SITE_PERL%%/PLSTAFService.pm
+%%PERL%%%%SITE_PERL%%/STAFLog.pm
+%%PERL%%%%SITE_PERL%%/STAFMon.pm
+%%PERL%%%%SITE_ARCH%%/libPLSTAF.so
 %%PYTHON%%%%PYTHON_SITELIBDIR%%/staf.pth
 %%PYTHON%%%%PYTHON_SITELIBDIR%%/staf/PYSTAF.so
 %%PYTHON%%%%PYTHON_2%%%%PYTHON_SITELIBDIR%%/staf/PySTAF.py
@@ -72,7 +80,8 @@ lib/libSTAFTCP.so
 %%PYTHON%%%%PYTHON_3%%%%PYTHON_SITELIBDIR%%/staf/PySTAFv3.py
 %%PYTHON%%%%PYTHON_3%%%%PYTHON_SITELIBDIR%%/staf/PySTAFv3.pyc
 %%PYTHON%%%%PYTHON_3%%%%PYTHON_SITELIBDIR%%/staf/PySTAFv3.pyo
-%%PYTHON%%%%PORTDOCS%%%%DOCSDIR%%/staf/STAFPython.htm
+%%PERL%%%%PORTDOCS%%%%STAF_DOCS%%%%DOCSDIR%%/staf/STAFPerl.htm
+%%PYTHON%%%%PORTDOCS%%%%STAF_DOCS%%%%DOCSDIR%%/staf/STAFPython.htm
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/c/LogIt.c
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/cpp/LogIt.cpp
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/demo/STAFDemoController.java

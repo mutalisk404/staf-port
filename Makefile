@@ -30,7 +30,7 @@ MAKE_ARGS=	OS_NAME="freebsd" \
 		BUILD_TYPE=${STAF_BUILD_TYPE} \
 		PROJECTS="${STAF_PROJECTS}"
 
-OPTIONS_DEFINE=	DEBUG IPV6 OPENSSL PYTHON
+OPTIONS_DEFINE=	DEBUG IPV6 OPENSSL PERL PYTHON
 OPTIONS_DEFAULT=IPV6 OPENSSL
 OPTIONS_SUB=	yes
 
@@ -46,8 +46,16 @@ OPENSSL_MAKE_ARGS=	OPENSSL_ROOT=${OPENSSLBASE} \
 			OPENSSL_INCLUDEDIRS=${OPENSSLINC}
 OPENSSL_VARS_OFF=	staf_use_ssl=""
 
+PERL_USES=	perl5 shebangfix
+PERL_VARS=	staf_projects+=perl shebang_files=lang/perl/*.pl perl_v=${PERL_VER:S/.//g} \
+		staf_install_docs=yes
+PERL_MAKE_ARGS=	PERL_V${PERL_V}_ROOT=${LOCALBASE} \
+		PERL_V${PERL_V}_LIBDIRS=${LOCALBASE}/lib/perl5/${PERL_VER}/${PERL_ARCH}/CORE \
+		PERL_V${PERL_V}_INCLUDEDIRS=${LOCALBASE}/lib/perl5/${PERL_VER}/${PERL_ARCH}/CORE \
+		PERL_BUILD_V${PERL_V}=1
+
 PYTHON_USES=	python:-3.4
-PYTHON_VARS=	staf_projects+=python use_python=py3kplist
+PYTHON_VARS=	staf_projects+=python use_python=py3kplist staf_install_docs=yes
 PYTHON_MAKE_ARGS=	PYTHON_V${PYTHON_SUFFIX}_ROOT=${LOCALBASE} \
 			PYTHON_V${PYTHON_SUFFIX}_INCLUDEDIRS=${PYTHON_INCLUDEDIR} \
 			PYTHON_V${PYTHON_SUFFIX}_LIBS=${PYTHON_VERSION}${PYTHON_ABIVER} \
@@ -64,12 +72,32 @@ STAF_BIN_FILES=	STAF STAFProc STAFReg STAFLoop STAFExecProxy FmtLog
 STAF_LIB_FILES=	libHello.so libSTAF.so libSTAFDSLS.so libSTAFDeviceService.so \
 		libSTAFEXECPROXY.so libSTAFLIPC.so libSTAFLog.so \
 		libSTAFMon.so libSTAFPool.so libSTAFReg.so libSTAFTCP.so
+STAF_PERL_SCRIPTS=	STAF.pl STAF2.pl
+STAF_PERL_MODULES=	DeviceService.pm PLSTAF.pm PLSTAFService.pm STAFLog.pm \
+			STAFMon.pm
+STAF_PERL_LIBS=		libPLSTAF.so
 STAF_PYLIB_FILES=	PySTAFLog.py PySTAFMon.py
 STAF_SSL_FILES=	CAList.crt STAFDefault.crt STAFDefault.key
+STAF_PERL_VERSIONS=	50 56 58 510 512 514 516 518 520
 STAF_PYTHON_VERSIONS=	22 23 24 25 26 27 30 31 32 33 34
+STAF_INSTALL_DOCS=	no
 STAF_VAR_DIR?=	/var/db/STAF
 
 .include <bsd.port.pre.mk>
+
+.if ${STAF_INSTALL_DOCS} == yes
+PLIST_SUB+=	STAF_DOCS=""
+.else
+PLIST_SUB+=	STAF_DOCS="@comment "
+.endif
+
+.if ${PORT_OPTIONS:MPERL}
+.for i in ${STAF_PERL_VERSIONS}
+.if ${PERL_V} != ${i}
+PERL_MAKE_ARGS+=	PERL_BUILD_V${i}=0
+.endif
+.endfor
+.endif
 
 .if ${PORT_OPTIONS:MPYTHON}
 .if ${PYTHON_MAJOR_VER} == 2
@@ -116,11 +144,32 @@ do-install:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	cd ${INSTALL_WRKSRC}/samples && \
 		${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
+.if ${STAF_INSTALL_DOCS} == yes
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	cd ${INSTALL_WRKSRC}/docs && \
+		${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
+.endif
 
 do-install-OPENSSL-on:
 	${MKDIR} ${STAGEDIR}${DATADIR}
 .for sslfile in ${STAF_SSL_FILES}
 	${INSTALL_DATA} ${INSTALL_WRKSRC}/bin/${sslfile} ${STAGEDIR}${DATADIR}
+.endfor
+
+do-install-PERL-on:
+.for script in ${STAF_PERL_SCRIPTS}
+	${INSTALL_SCRIPT} ${INSTALL_WRKSRC}/bin/${script} \
+		${STAGEDIR}${PREFIX}/bin/
+.endfor
+	${MKDIR} ${STAGEDIR}${SITE_PERL}
+.for module in ${STAF_PERL_MODULES}
+	${INSTALL_DATA} ${INSTALL_WRKSRC}/bin/${module} \
+		${STAGEDIR}${SITE_PERL}
+.endfor
+	${MKDIR} ${STAGEDIR}${SITE_ARCH}
+.for lib in ${STAF_PERL_LIBS}
+	${INSTALL_LIB} ${INSTALL_WRKSRC}/lib/perl${PERL_V}/${lib} \
+		${STAGEDIR}${SITE_ARCH}
 .endfor
 
 do-install-PYTHON-on:
@@ -136,8 +185,5 @@ do-install-PYTHON-on:
 	${INSTALL_LIB} ${INSTALL_WRKSRC}/lib/python${PYTHON_SUFFIX}/PYSTAF.so \
 		${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}
 	${ECHO} ${PORTNAME} > ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}.pth
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	cd ${INSTALL_WRKSRC}/docs && \
-		${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.post.mk>

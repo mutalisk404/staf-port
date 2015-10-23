@@ -163,6 +163,7 @@ do-install:
 	${INSTALL_PROGRAM} ${INSTALL_WRKSRC}/bin/${bin} ${STAGEDIR}${PREFIX}/bin/
 .endfor
 	${LN} -s ${PREFIX}/bin/STAF ${STAGEDIR}${PREFIX}/bin/staf
+	${LN} -s ${PREFIX}/bin/FmtLog ${STAGEDIR}${PREFIX}/bin/fmtlog
 .for lib in ${STAF_LIB_FILES}
 	${INSTALL_LIB} ${INSTALL_WRKSRC}/lib/${lib} ${STAGEDIR}${PREFIX}/lib/
 .endfor

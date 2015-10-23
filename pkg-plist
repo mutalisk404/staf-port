@@ -2,6 +2,7 @@ bin/FmtLog
 bin/STAF
 %%PERL%%bin/STAF.pl
 %%PERL%%bin/STAF2.pl
+%%TCL%%bin/STAF.tcl
 bin/STAFExecProxy
 bin/STAFLoop
 bin/STAFProc
@@ -49,6 +50,9 @@ include/STAFTraceInlImpl.cpp
 include/STAFUtil.h
 include/STAF_fstream.h
 include/STAF_iostream.h
+%%TCL%%lib/STAFLog.tcl
+%%TCL%%lib/STAFMon.tcl
+%%TCL%%lib/STAFUtil.tcl
 lib/libHello.so
 %%JAVA%%lib/libJSTAF.so
 %%JAVA%%lib/libJSTAFSH.so
@@ -62,6 +66,8 @@ lib/libSTAFMon.so
 lib/libSTAFPool.so
 lib/libSTAFReg.so
 lib/libSTAFTCP.so
+%%TCL%%lib/libTCLSTAF.so
+%%TCL%%lib/pkgIndex.tcl
 %%PERL%%%%SITE_PERL%%/DeviceService.pm
 %%PERL%%%%SITE_PERL%%/PLSTAF.pm
 %%PERL%%%%SITE_PERL%%/PLSTAFService.pm
@@ -85,6 +91,7 @@ lib/libSTAFTCP.so
 %%JAVA%%%%PORTDOCS%%%%STAF_DOCS%%%%DOCSDIR%%/staf/STAFJava.htm
 %%PERL%%%%PORTDOCS%%%%STAF_DOCS%%%%DOCSDIR%%/staf/STAFPerl.htm
 %%PYTHON%%%%PORTDOCS%%%%STAF_DOCS%%%%DOCSDIR%%/staf/STAFPython.htm
+%%TCL%%%%PORTDOCS%%%%STAF_DOCS%%%%DOCSDIR%%/staf/STAFTcl.htm
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/c/LogIt.c
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/cpp/LogIt.cpp
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/demo/STAFDemoController.java

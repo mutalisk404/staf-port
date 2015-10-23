@@ -30,7 +30,7 @@ MAKE_ARGS=	OS_NAME="freebsd" \
 		BUILD_TYPE=${STAF_BUILD_TYPE} \
 		PROJECTS="${STAF_PROJECTS}"
 
-OPTIONS_DEFINE=	DEBUG DOCS EXAMPLES IPV6 JAVA OPENSSL PERL PYTHON
+OPTIONS_DEFINE=	DEBUG DOCS EXAMPLES IPV6 JAVA OPENSSL PERL PYTHON TCL
 OPTIONS_DEFAULT=IPV6 OPENSSL
 OPTIONS_SUB=	yes
 
@@ -55,7 +55,7 @@ OPENSSL_MAKE_ARGS=	OPENSSL_ROOT=${OPENSSLBASE} \
 OPENSSL_VARS_OFF=	staf_use_ssl=""
 
 PERL_USES=	perl5 shebangfix
-PERL_VARS=	staf_projects+=perl shebang_files=lang/perl/*.pl perl_v=${PERL_VER:S/.//g} \
+PERL_VARS=	staf_projects+=perl shebang_files+=lang/perl/*.pl perl_v=${PERL_VER:S/.//g} \
 		staf_install_docs=yes
 PERL_MAKE_ARGS=	PERL_V${PERL_V}_ROOT=${LOCALBASE} \
 		PERL_V${PERL_V}_LIBDIRS=${LOCALBASE}/lib/perl5/${PERL_VER}/${PERL_ARCH}/CORE \
@@ -69,6 +69,14 @@ PYTHON_MAKE_ARGS=	PYTHON_V${PYTHON_SUFFIX}_ROOT=${LOCALBASE} \
 			PYTHON_V${PYTHON_SUFFIX}_LIBS=${PYTHON_VERSION}${PYTHON_ABIVER} \
 			PYTHON_BUILD_V${PYTHON_SUFFIX}=1
 
+TCL_USES=	tcl shebangfix
+TCL_VARS=	staf_projects+=tcl shebang_files+=lang/tcl/STAF.tcl tcl_v=${TCL_VER:S/.//g} \
+		staf_install_docs=yes
+TCL_MAKE_ARGS=	TCL_V${TCL_V}_ROOT=${LOCALBASE} \
+		TCL_V${TCL_V}_INCLUDEDIRS=${TCL_INCLUDEDIR} \
+		TCL_V${TCL_V}_LIBDIRS=${TCL_LIBDIR} \
+		TCL_BUILD_V${TCL_V}=1
+
 MAKE_JOBS_UNSAFE=	yes
 USES=		gmake
 USE_LDCONFIG=	yes
@@ -76,6 +84,7 @@ USE_RC_SUBR=	stafproc
 SUB_LIST+=	STAF_VAR_DIR=${STAF_VAR_DIR}
 
 STAF_PROJECTS=	staf connprov_tcp connprov_localipc
+
 STAF_BIN_FILES=	STAF STAFProc STAFReg STAFLoop STAFExecProxy FmtLog
 STAF_LIB_FILES=	libHello.so libSTAF.so libSTAFDSLS.so libSTAFDeviceService.so \
 		libSTAFEXECPROXY.so libSTAFLIPC.so libSTAFLog.so \
@@ -88,8 +97,13 @@ STAF_PERL_MODULES=	DeviceService.pm PLSTAF.pm PLSTAFService.pm STAFLog.pm \
 STAF_PERL_LIBS=		libPLSTAF.so
 STAF_PYLIB_FILES=	PySTAFLog.py PySTAFMon.py
 STAF_SSL_FILES=	CAList.crt STAFDefault.crt STAFDefault.key
+STAF_TCL_LIBS=	libTCLSTAF.so
+STAF_TCL_MODULES=	STAFLog.tcl STAFMon.tcl STAFUtil.tcl pkgIndex.tcl
+
 STAF_PERL_VERSIONS=	50 56 58 510 512 514 516 518 520
 STAF_PYTHON_VERSIONS=	22 23 24 25 26 27 30 31 32 33 34
+STAF_TCL_VERSIONS=	83 84 85 86
+
 STAF_INSTALL_DOCS=	no
 STAF_VAR_DIR?=	/var/db/STAF
 
@@ -123,6 +137,14 @@ MAKE_ARGS+=		PYTHON_V${PYTHON_SUFFIX}_LIBDIRS=${PYTHON_LIBDIR}/config-${PYTHON_V
 .for i in ${STAF_PYTHON_VERSIONS}
 .if ${PYTHON_SUFFIX} != ${i}
 PYTHON_MAKE_ARGS+=	PYTHON_BUILD_V${i}=0
+.endif
+.endfor
+.endif
+
+.if ${PORT_OPTIONS:MTCL}
+.for i in ${STAF_TCL_VERSIONS}
+.if ${TCL_V} != ${i}
+TCL_MAKE_ARGS+=	TCL_BUILD_V${i}=0
 .endif
 .endfor
 .endif
@@ -206,5 +228,17 @@ do-install-PYTHON-on:
 	${INSTALL_LIB} ${INSTALL_WRKSRC}/lib/python${PYTHON_SUFFIX}/PYSTAF.so \
 		${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}
 	${ECHO} ${PORTNAME} > ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}.pth
+
+do-install-TCL-on:
+	${INSTALL_SCRIPT} ${INSTALL_WRKSRC}/bin/STAF.tcl \
+		${STAGEDIR}${PREFIX}/bin
+.for lib in ${STAF_TCL_LIBS}
+	${INSTALL_LIB} ${INSTALL_WRKSRC}/lib/tcl${TCL_V}/${lib} \
+		${STAGEDIR}${PREFIX}/lib
+.endfor
+.for module in ${STAF_TCL_MODULES}
+	${INSTALL_DATA} ${INSTALL_WRKSRC}/lib/${module} \
+		${STAGEDIR}${PREFIX}/lib
+.endfor
 
 .include <bsd.port.post.mk>

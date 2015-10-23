@@ -40,7 +40,9 @@ DEBUG_VARS_OFF=	staf_build_type=retail
 IPV6_VARS=	staf_use_ipv6=1
 IPV6_VARS_OFF=	staf_use_ipv6=""
 
-JAVA_VARS=	staf_projects+=java use_java=yes staf_install_docs=yes
+JAVA_VARS=	staf_projects+=java \
+		use_java=yes \
+		staf_install_docs=yes
 JAVA_MAKE_ARGS=	JAVA_V12_ROOT=${JAVA_HOME} \
 		JAVAC_V12=${JAVAC} \
 		JAVAH_V12=${JAVAH} \
@@ -48,14 +50,17 @@ JAVA_MAKE_ARGS=	JAVA_V12_ROOT=${JAVA_HOME} \
 		JAR_V12=${JAR} \
 		JAVA_BUILD_V12=1
 
-OPENSSL_VARS=	staf_use_ssl=1 use_openssl=yes
+OPENSSL_VARS=	staf_use_ssl=1 \
+		use_openssl=yes
 OPENSSL_MAKE_ARGS=	OPENSSL_ROOT=${OPENSSLBASE} \
 			OPENSSL_LIBDIRS="${OPENSSLLIB}" \
 			OPENSSL_INCLUDEDIRS=${OPENSSLINC}
 OPENSSL_VARS_OFF=	staf_use_ssl=""
 
 PERL_USES=	perl5 shebangfix
-PERL_VARS=	staf_projects+=perl shebang_files+=lang/perl/*.pl perl_v=${PERL_VER:S/.//g} \
+PERL_VARS=	staf_projects+=perl \
+		shebang_files+=lang/perl/*.pl \
+		perl_v=${PERL_VER:S/.//g} \
 		staf_install_docs=yes
 PERL_MAKE_ARGS=	PERL_V${PERL_V}_ROOT=${LOCALBASE} \
 		PERL_V${PERL_V}_LIBDIRS=${LOCALBASE}/lib/perl5/${PERL_VER}/${PERL_ARCH}/CORE \
@@ -63,14 +68,18 @@ PERL_MAKE_ARGS=	PERL_V${PERL_V}_ROOT=${LOCALBASE} \
 		PERL_BUILD_V${PERL_V}=1
 
 PYTHON_USES=	python:-3.4
-PYTHON_VARS=	staf_projects+=python use_python=py3kplist staf_install_docs=yes
+PYTHON_VARS=	staf_projects+=python \
+		use_python=py3kplist \
+		staf_install_docs=yes
 PYTHON_MAKE_ARGS=	PYTHON_V${PYTHON_SUFFIX}_ROOT=${LOCALBASE} \
 			PYTHON_V${PYTHON_SUFFIX}_INCLUDEDIRS=${PYTHON_INCLUDEDIR} \
 			PYTHON_V${PYTHON_SUFFIX}_LIBS=${PYTHON_VERSION}${PYTHON_ABIVER} \
 			PYTHON_BUILD_V${PYTHON_SUFFIX}=1
 
 TCL_USES=	tcl shebangfix
-TCL_VARS=	staf_projects+=tcl shebang_files+=lang/tcl/STAF.tcl tcl_v=${TCL_VER:S/.//g} \
+TCL_VARS=	staf_projects+=tcl \
+		shebang_files+=lang/tcl/STAF.tcl \
+		tcl_v=${TCL_VER:S/.//g} \
 		staf_install_docs=yes
 TCL_MAKE_ARGS=	TCL_V${TCL_V}_ROOT=${LOCALBASE} \
 		TCL_V${TCL_V}_INCLUDEDIRS=${TCL_INCLUDEDIR} \

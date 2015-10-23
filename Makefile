@@ -30,7 +30,7 @@ MAKE_ARGS=	OS_NAME="freebsd" \
 		BUILD_TYPE=${STAF_BUILD_TYPE} \
 		PROJECTS="${STAF_PROJECTS}"
 
-OPTIONS_DEFINE=	DEBUG DOCS EXAMPLES IPV6 OPENSSL PERL PYTHON
+OPTIONS_DEFINE=	DEBUG DOCS EXAMPLES IPV6 JAVA OPENSSL PERL PYTHON
 OPTIONS_DEFAULT=IPV6 OPENSSL
 OPTIONS_SUB=	yes
 
@@ -39,6 +39,14 @@ DEBUG_VARS_OFF=	staf_build_type=retail
 
 IPV6_VARS=	staf_use_ipv6=1
 IPV6_VARS_OFF=	staf_use_ipv6=""
+
+JAVA_VARS=	staf_projects+=java use_java=yes staf_install_docs=yes
+JAVA_MAKE_ARGS=	JAVA_V12_ROOT=${JAVA_HOME} \
+		JAVAC_V12=${JAVAC} \
+		JAVAH_V12=${JAVAH} \
+		JAVA_V12=${JAVA} \
+		JAR_V12=${JAR} \
+		JAVA_BUILD_V12=1
 
 OPENSSL_VARS=	staf_use_ssl=1 use_openssl=yes
 OPENSSL_MAKE_ARGS=	OPENSSL_ROOT=${OPENSSLBASE} \
@@ -72,6 +80,8 @@ STAF_BIN_FILES=	STAF STAFProc STAFReg STAFLoop STAFExecProxy FmtLog
 STAF_LIB_FILES=	libHello.so libSTAF.so libSTAFDSLS.so libSTAFDeviceService.so \
 		libSTAFEXECPROXY.so libSTAFLIPC.so libSTAFLog.so \
 		libSTAFMon.so libSTAFPool.so libSTAFReg.so libSTAFTCP.so
+STAF_JAVA_LIBS=	libJSTAF.so libJSTAFSH.so
+STAF_JAVA_JARS=	JSTAF.jar STAFHTTPSLS.jar
 STAF_PERL_SCRIPTS=	STAF.pl STAF2.pl
 STAF_PERL_MODULES=	DeviceService.pm PLSTAF.pm PLSTAFService.pm STAFLog.pm \
 			STAFMon.pm
@@ -150,6 +160,17 @@ do-install:
 		${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
 .endif
 
+do-install-JAVA-on:
+#	${MKDIR} ${STAGEDIR}${PREFIX}/lib/classpath
+.for javalib in ${STAF_JAVA_LIBS}
+	${INSTALL_LIB} ${INSTALL_WRKSRC}/lib/${javalib} \
+		${STAGEDIR}${PREFIX}/lib
+.endfor
+.for jar in ${STAF_JAVA_JARS}
+	${INSTALL_DATA} ${INSTALL_WRKSRC}/lib/${jar} \
+		${STAGEDIR}${JAVAJARDIR}
+.endfor
+
 do-install-OPENSSL-on:
 	${MKDIR} ${STAGEDIR}${DATADIR}
 .for sslfile in ${STAF_SSL_FILES}
@@ -161,15 +182,15 @@ do-install-PERL-on:
 	${INSTALL_SCRIPT} ${INSTALL_WRKSRC}/bin/${script} \
 		${STAGEDIR}${PREFIX}/bin/
 .endfor
-	${MKDIR} ${STAGEDIR}${SITE_PERL}
+	${MKDIR} ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}
 .for module in ${STAF_PERL_MODULES}
 	${INSTALL_DATA} ${INSTALL_WRKSRC}/bin/${module} \
-		${STAGEDIR}${SITE_PERL}
+		${STAGEDIR}${PREFIX}/${SITE_PERL_REL}
 .endfor
-	${MKDIR} ${STAGEDIR}${SITE_ARCH}
+	${MKDIR} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}
 .for lib in ${STAF_PERL_LIBS}
 	${INSTALL_LIB} ${INSTALL_WRKSRC}/lib/perl${PERL_V}/${lib} \
-		${STAGEDIR}${SITE_ARCH}
+		${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}
 .endfor
 
 do-install-PYTHON-on:

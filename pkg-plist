@@ -50,6 +50,8 @@ include/STAFUtil.h
 include/STAF_fstream.h
 include/STAF_iostream.h
 lib/libHello.so
+%%JAVA%%lib/libJSTAF.so
+%%JAVA%%lib/libJSTAFSH.so
 lib/libSTAF.so
 lib/libSTAFDSLS.so
 lib/libSTAFDeviceService.so
@@ -80,6 +82,7 @@ lib/libSTAFTCP.so
 %%PYTHON%%%%PYTHON_3%%%%PYTHON_SITELIBDIR%%/staf/PySTAFv3.py
 %%PYTHON%%%%PYTHON_3%%%%PYTHON_SITELIBDIR%%/staf/PySTAFv3.pyc
 %%PYTHON%%%%PYTHON_3%%%%PYTHON_SITELIBDIR%%/staf/PySTAFv3.pyo
+%%JAVA%%%%PORTDOCS%%%%STAF_DOCS%%%%DOCSDIR%%/staf/STAFJava.htm
 %%PERL%%%%PORTDOCS%%%%STAF_DOCS%%%%DOCSDIR%%/staf/STAFPerl.htm
 %%PYTHON%%%%PORTDOCS%%%%STAF_DOCS%%%%DOCSDIR%%/staf/STAFPython.htm
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/c/LogIt.c
@@ -93,6 +96,8 @@ lib/libSTAFTCP.so
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/rexx/Sample2.cmd
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/rexx/Sample3.cmd
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/rexx/Sample4.cmd
+%%JAVA%%%%JAVAJARDIR%%/JSTAF.jar
+%%JAVA%%%%JAVAJARDIR%%/STAFHTTPSLS.jar
 %%OPENSSL%%%%DATADIR%%/CAList.crt
 %%OPENSSL%%%%DATADIR%%/STAFDefault.crt
 %%OPENSSL%%%%DATADIR%%/STAFDefault.key

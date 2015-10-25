@@ -109,6 +109,10 @@ PLIST_SUB+=	STAF_DOCS="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MPERL}
+.if ${PERL_LEVEL} >= 502200
+BROKEN=         Perl >= 5.22 is not supported
+.endif
+
 .for i in ${STAF_PERL_VERSIONS}
 .if ${PERL_V} != ${i}
 PERL_MAKE_ARGS+=	PERL_BUILD_V${i}=0

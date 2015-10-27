@@ -199,10 +199,9 @@ do-install-PERL-on:
 	${INSTALL_DATA} ${INSTALL_WRKSRC}/bin/${module} \
 		${STAGEDIR}${PREFIX}/${SITE_PERL_REL}
 .endfor
-	${MKDIR} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}
 .for lib in ${STAF_PERL_LIBS}
 	${INSTALL_LIB} ${INSTALL_WRKSRC}/lib/perl${PERL_V}/${lib} \
-		${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}
+		${STAGEDIR}${PREFIX}/lib
 .endfor
 
 do-install-PYTHON-on:

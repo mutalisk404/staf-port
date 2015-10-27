@@ -53,6 +53,7 @@ include/STAF_iostream.h
 lib/libHello.so
 %%JAVA%%lib/libJSTAF.so
 %%JAVA%%lib/libJSTAFSH.so
+lib/libPLSTAF.so
 lib/libSTAF.so
 lib/libSTAFDSLS.so
 lib/libSTAFDeviceService.so
@@ -68,7 +69,6 @@ lib/libSTAFTCP.so
 %%PERL%%%%SITE_PERL%%/PLSTAFService.pm
 %%PERL%%%%SITE_PERL%%/STAFLog.pm
 %%PERL%%%%SITE_PERL%%/STAFMon.pm
-%%PERL%%%%SITE_ARCH%%/libPLSTAF.so
 %%PYTHON%%%%PYTHON_SITELIBDIR%%/staf.pth
 %%PYTHON%%%%PYTHON_SITELIBDIR%%/staf/PYSTAF.so
 %%PYTHON%%%%PYTHON_2%%%%PYTHON_SITELIBDIR%%/staf/PySTAF.py

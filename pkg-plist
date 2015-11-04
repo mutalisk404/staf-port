@@ -274,3 +274,4 @@ lib/libSTAFTCP.so
 %%DATADIR%%/codepage/ibm-961.bin
 %%DATADIR%%/codepage/ibm-964.bin
 %%DATADIR%%/codepage/ibm-970.bin
+@dir %%STAF_VAR_DIR%%

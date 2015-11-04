@@ -1,11 +1,10 @@
 # Created by: Sergey Kozlov <kozlov.sergey.404@gmail.com>
-# $FreeBSD$
+# $FreeBSD: head/devel/staf/Makefile 400451 2015-10-29 09:45:34Z riggs $
 
 PORTNAME=	staf
 PORTVERSION=	3.4.23
 CATEGORIES=	devel net
-MASTER_SITES=	https://prdownloads.sourceforge.net/staf/ \
-		http://prdownloads.sourceforge.net/staf/
+MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/V${PORTVERSION}
 DISTNAME=	STAF${PORTVERSION:S/.//g}-src
 
 MAINTAINER=	kozlov.sergey.404@gmail.com
@@ -81,6 +80,7 @@ USES=		gmake
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	stafproc
 SUB_LIST+=	STAF_VAR_DIR=${STAF_VAR_DIR}
+PLIST_SUB+=	STAF_VAR_DIR=${STAF_VAR_DIR}
 
 STAF_PROJECTS=	staf connprov_tcp connprov_localipc
 STAF_BIN_FILES=	STAF STAFProc STAFReg STAFLoop STAFExecProxy FmtLog
@@ -217,5 +217,8 @@ do-install-PYTHON-on:
 	${INSTALL_LIB} ${INSTALL_WRKSRC}/lib/python${PYTHON_SUFFIX}/PYSTAF.so \
 		${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}
 	${ECHO} ${PORTNAME} > ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}.pth
+
+post-install:
+	${MKDIR} ${STAGEDIR}${STAF_VAR_DIR}
 
 .include <bsd.port.post.mk>

@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# $FreeBSD$
+# $FreeBSD: head/devel/staf/files/stafproc.in 400451 2015-10-29 09:45:34Z riggs $
 #
 
 # PROVIDE: stafproc

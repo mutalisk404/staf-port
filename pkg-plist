@@ -53,7 +53,7 @@ include/STAF_iostream.h
 lib/libHello.so
 %%JAVA%%lib/libJSTAF.so
 %%JAVA%%lib/libJSTAFSH.so
-lib/libPLSTAF.so
+%%PERL%%lib/libPLSTAF.so
 lib/libSTAF.so
 lib/libSTAFDSLS.so
 lib/libSTAFDeviceService.so
